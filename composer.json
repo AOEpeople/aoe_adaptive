@@ -1,8 +1,8 @@
 {
     "name": "aoe/aoe_adaptive",
-    "description": "Handle different devices",
+    "description": "Render different content based on the device used to access the website.",
     "type": "typo3-cms-extension",
-    "license": "GPL-3.0+",
+    "license": "GPL-2.0+",
     "authors": [{
         "name": "Deniz Dagtekin, Chetan Thapliyal",
         "email": "dev@aoe.com"

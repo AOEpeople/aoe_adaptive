@@ -17,10 +17,16 @@ namespace Aoe\AoeAdaptive\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
 
-class DeviceDetector extends \Mobile_Detect
+/**
+ * Detects client device type.
+ *
+ * @author Chetan Thapliyal <chetan.thapliyal@aoe.com>
+ */
+class DeviceDetector extends \Mobile_Detect implements SingletonInterface
 {
     // Device type constants
-    const TYPE_MOBILE   = 1;
-    const TYPE_PC_TABLE = 2;
+    const TYPE_MOBILE    = 1;
+    const TYPE_PC_TABLET = 2;
 }

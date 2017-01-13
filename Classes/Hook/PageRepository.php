@@ -19,56 +19,32 @@ namespace Aoe\AoeAdaptive\Hook;
 
 use Aoe\AoeAdaptive\Service\DeviceDetector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository as T3PageRepository;
 
 /**
- * @package Aoe\AoeAdaptive\Hook
+ * Implements hooks in PageRepository class.
+ *
+ * @author Chetan Thapliyal <chetan.thapliyal@aoe.com>
  */
 class PageRepository
 {
     /**
-     * @var DeviceDetector
-     */
-    private $userAgentDetector;
-
-    /**
-     * @param  array $params                Hook parameters.
-     * @param  T3PageRepository $parent     Parent class calling the hook.
+     * Generates SQL condition to filter content by client's device type.
+     *
+     * @param  array $params        Hook parameters.
      * @return string
      */
-    public function addEnableColumns(array $params, T3PageRepository $parent)
+    public function addEnableColumns(array $params)
     {
         $contentSelectionCriteria = '';
-        $userAgentDetector = $this->getUserAgentDetector();
 
         if ($params['table'] === 'tt_content') {
-            if ($userAgentDetector && $userAgentDetector->isMobile()) {
-                $contentSelectionCriteria = '(' .
-                    'FIND_IN_SET(\'' . DeviceDetector::TYPE_MOBILE. '\', tx_aoeadaptive_devices) ' .
-                    'OR tx_aoeadaptive_devices = ""' .
-                ')';
-            } else {
-                $contentSelectionCriteria = '(' .
-                    'FIND_IN_SET(\'' . DeviceDetector::TYPE_PC_TABLE . '\', tx_aoeadaptive_devices) ' .
-                    'OR tx_aoeadaptive_devices = ""' .
-                ')';
-            }
+            $deviceDetector = GeneralUtility::makeInstance(DeviceDetector::class);
+            $deviceType = ($deviceDetector && $deviceDetector->isMobile())
+                          ? DeviceDetector::TYPE_MOBILE
+                          : DeviceDetector::TYPE_PC_TABLET;
+            $contentSelectionCriteria = "(FIND_IN_SET('$deviceType', tx_aoeadaptive_devices) OR tx_aoeadaptive_devices = '')";
         }
 
         return $contentSelectionCriteria;
-    }
-
-    /**
-     * Gets an instance of user agent detector class.
-     *
-     * @return DeviceDetector
-     */
-    protected function getUserAgentDetector()
-    {
-        if (!($this->userAgentDetector instanceof DeviceDetector)) {
-            $this->userAgentDetector = GeneralUtility::makeInstance(DeviceDetector::class);
-        }
-
-        return $this->userAgentDetector;
     }
 }

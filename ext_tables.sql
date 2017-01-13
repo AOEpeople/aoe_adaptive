@@ -1,6 +1,6 @@
 #
-# Table structure for table 'aoe_adaptive'
+# Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-  tx_aoeadaptive_devices VARCHAR (255) DEFAULT '0' NOT NULL
+  tx_aoeadaptive_devices VARCHAR (255) DEFAULT '' NOT NULL
 );

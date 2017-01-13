@@ -17,20 +17,28 @@ namespace Aoe\AoeAdaptive\Service\Auth;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Aoe\AoeAdaptive\Service\DeviceDetector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 
+/**
+ * Assigns pseudo user groups to frontend users.
+ *
+ * @author Chetan Thapliyal <chetan.thapliyal@aoe.com>
+ */
 class UserGroup extends AbstractAuthenticationService
 {
     /**
-     * @var \Mobile_Detect
+     * Assigns a pseudo user group to frontend user depending on his device type.
+     *
+     * @param  array $user       User and session data.
+     * @param  array $groups     Existing user groups, if any.
+     * @return array
      */
-    private $userAgentDetector;
-
-    public function getGroups($user, $existingGroups)
+    public function getGroups(array $user = null, array $groups)
     {
-        $userAgentDetector = $this->getUserAgentDetector();
-        if ($userAgentDetector && $userAgentDetector->isMobile()) {
+        $deviceDetector = GeneralUtility::makeInstance(DeviceDetector::class);
+        if ($deviceDetector && $deviceDetector->isMobile()) {
             $pseudoFrontendGroup = [
                 'title' => 'Frontend: Mobile',
                 'uid'   => '-333'
@@ -43,22 +51,8 @@ class UserGroup extends AbstractAuthenticationService
         }
 
         $pseudoFrontendGroup['pid'] = '';
-        $existingGroups[] = $pseudoFrontendGroup;
+        $groups[] = $pseudoFrontendGroup;
 
-        return $existingGroups;
-    }
-
-    /**
-     * Gets an instance of user agent detector class.
-     *
-     * @return \Mobile_Detect
-     */
-    protected function getUserAgentDetector()
-    {
-        if (!($this->userAgentDetector instanceof \Mobile_Detect)) {
-            $this->userAgentDetector = GeneralUtility::makeInstance('Mobile_Detect');
-        }
-
-        return $this->userAgentDetector;
+        return $groups;
     }
 }

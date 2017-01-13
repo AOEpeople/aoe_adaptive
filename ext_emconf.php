@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'AOE Adaptive',
-    'description' => '',
+    'description' => 'Render different content based on the device used to access the website.',
     'category' => 'misc',
     'version' => '1.0.dev',
     'state' => 'alpha',

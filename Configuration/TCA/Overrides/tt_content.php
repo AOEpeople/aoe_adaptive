@@ -2,6 +2,8 @@
 
 defined('TYPO3_MODE') or die();
 
+use Aoe\AoeAdaptive\Service;
+
 $langFile = 'LLL:EXT:aoe_adaptive/Resources/Private/Language/Backend/Tceform.xlf';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
@@ -15,8 +17,8 @@ $langFile = 'LLL:EXT:aoe_adaptive/Resources/Private/Language/Backend/Tceform.xlf
                 'renderType' => 'selectMultipleSideBySide',
                 'showIconTable' => true,
                 'items' => [
-                    [$langFile . ':tt_content.tx_aoeadaptive_devices.mobile', \Aoe\AoeAdaptive\Service\DeviceDetector::TYPE_MOBILE],
-                    [$langFile . ':tt_content.tx_aoeadaptive_devices.tablet_pc', \Aoe\AoeAdaptive\Service\DeviceDetector::TYPE_PC_TABLE],
+                    [$langFile . ':tt_content.tx_aoeadaptive_devices.mobile', Service\DeviceDetector::TYPE_MOBILE],
+                    [$langFile . ':tt_content.tx_aoeadaptive_devices.tablet_pc', Service\DeviceDetector::TYPE_PC_TABLET],
                 ],
                 'size' => 5,
             ]
