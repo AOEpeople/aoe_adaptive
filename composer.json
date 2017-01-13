@@ -1,0 +1,18 @@
+{
+    "name": "aoe/aoe_adaptive",
+    "description": "Handle different devices",
+    "type": "typo3-cms-extension",
+    "license": "GPL-3.0+",
+    "authors": [{
+        "name": "Deniz Dagtekin, Chetan Thapliyal",
+        "email": "dev@aoe.com"
+    }],
+    "require": {
+        "mobiledetect/mobiledetectlib": "^2.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aoe\\AoeAdaptive\\": "Classes/"
+        }
+    }
+}
