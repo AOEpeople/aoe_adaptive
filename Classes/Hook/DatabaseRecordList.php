@@ -21,30 +21,26 @@ use Aoe\AoeAdaptive\Service\DeviceDetector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Implements hooks in PageRepository class.
+ * Extends `DatabaseRecordList` core class to filter content elements in page module by device type.
  *
  * @author Chetan Thapliyal <chetan.thapliyal@aoe.com>
  */
-class PageRepository
+class DatabaseRecordList
 {
     /**
-     * Generates SQL condition to filter content by client's device type.
+     * Generates SQL condition to filter content by device type.
      *
-     * @param  array $params        Hook parameters.
-     * @return string
+     * @param  array  $parameters   Hook parameters
+     * @param  string $table        Table name
+     * @return void
      */
-    public function addEnableColumns(array $params)
+    public function buildQueryParametersPostProcess(&$parameters, $table)
     {
-        $contentSelectionCriteria = '';
-
-        if ($params['table'] === 'tt_content') {
-            $deviceDetector = GeneralUtility::makeInstance(DeviceDetector::class);
-            $deviceType = ($deviceDetector && $deviceDetector->isMobile())
+        if (($table === 'tt_content') && (isset($_GET['device']))) {
+            $deviceType = (DeviceDetector::TYPE_MOBILE === intval(GeneralUtility::_GP('device')))
                           ? DeviceDetector::TYPE_MOBILE
                           : DeviceDetector::TYPE_PC_TABLET;
-            $contentSelectionCriteria = "(FIND_IN_SET('$deviceType', tx_aoeadaptive_devices) OR tx_aoeadaptive_devices = '')";
+            $parameters['where'][] = "(FIND_IN_SET('$deviceType', tx_aoeadaptive_devices) OR tx_aoeadaptive_devices = '')";
         }
-
-        return $contentSelectionCriteria;
     }
 }
