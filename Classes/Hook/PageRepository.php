@@ -39,7 +39,7 @@ class PageRepository
 
         if ($params['table'] === 'tt_content') {
             $deviceDetector = GeneralUtility::makeInstance(DeviceDetector::class);
-            $deviceType = ($deviceDetector && $deviceDetector->isMobile())
+            $deviceType = ($deviceDetector && $deviceDetector->isMobile() && (!$deviceDetector->isTablet()))
                           ? DeviceDetector::TYPE_MOBILE
                           : DeviceDetector::TYPE_PC_TABLET;
             $contentSelectionCriteria = "(FIND_IN_SET('$deviceType', tx_aoeadaptive_devices) OR tx_aoeadaptive_devices = '')";
