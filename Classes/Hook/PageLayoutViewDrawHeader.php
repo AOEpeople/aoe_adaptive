@@ -49,16 +49,17 @@ class PageLayoutViewDrawHeader
      */
     public function tt_content_drawHeader($params, $parentObject)
     {
+        if ($params[0] === 'tt_content') {
+            if ($params['2']['tx_aoeadaptive_devices'] == DeviceDetector::TYPE_MOBILE) {
+                $icon = 'tx-aoeadaptive-mobile';
+            } elseif ($params['2']['tx_aoeadaptive_devices'] == DeviceDetector::TYPE_PC_TABLET) {
+                $icon = 'tx-aoeadaptive-pc';
+            } else {
+                $icon = 'tx-aoeadaptive-all';
+            }
 
-        if ($params['2']['tx_aoeadaptive_devices'] == DeviceDetector::TYPE_MOBILE) {
-            $icon = 'tx-aoeadaptive-mobile';
-        } elseif ($params['2']['tx_aoeadaptive_devices'] == DeviceDetector::TYPE_PC_TABLET) {
-            $icon = 'tx-aoeadaptive-pc';
-        } else {
-            $icon = 'tx-aoeadaptive-all';
+            $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
+            return $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render();
         }
-
-        $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
-        return $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render();
     }
 }
