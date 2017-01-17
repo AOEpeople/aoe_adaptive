@@ -18,9 +18,10 @@ namespace Aoe\AoeAdaptive\Controller;
  */
 
 use Aoe\AoeAdaptive\Service\DeviceDetector;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Controller\PageLayoutController as T3PageLayoutController;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,16 +30,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Chetan Thapliyal <chetan.thapliyal@aoe.com>
  */
-class PageLayoutController extends T3PageLayoutController
-{
+class PageLayoutController extends T3PageLayoutController {
     /**
      * Generates toolbar buttons for page layout view.
      *
-     * @param  string $function      Identifier for function of module
+     * @param  string $function Identifier for function of module
      * @return void
      */
-    protected function makeButtons($function = '')
-    {
+    protected function makeButtons($function = '') {
         parent::makeButtons($function);
 
         // Render new toolbar buttons only in "Columns" view
@@ -47,35 +46,46 @@ class PageLayoutController extends T3PageLayoutController
             $mobileIcon = 'tx-aoeadaptive-mobile';
             $pcIcon = 'tx-aoeadaptive-pc';
 
-            if (isset($_GET['device'])) {
-                if (DeviceDetector::TYPE_MOBILE === intval(GeneralUtility::_GET('device'))) {
+            if (isset($_GET['tx_aoeadaptive_device']) && is_numeric($_GET['tx_aoeadaptive_device'])) {
+                $deviceType = intval(GeneralUtility::_GET('tx_aoeadaptive_device'));
+
+                if (DeviceDetector::TYPE_MOBILE === $deviceType) {
                     $mobileIcon .= '-active';
-                } elseif (DeviceDetector::TYPE_PC_TABLET === intval(GeneralUtility::_GET('device'))) {
+                } elseif (DeviceDetector::TYPE_PC_TABLET === $deviceType) {
                     $pcIcon .= '-active';
                 }
             } else {
                 $allDesktop .= '-active';
             }
 
-            $allViewButton = $this->buttonBar->makeLinkButton()
-                ->setTitle('All elements')
-                ->setClasses($allDesktop)
-                ->setIcon($this->iconFactory->getIcon($allDesktop, Icon::SIZE_SMALL))
-                ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id]));
-            $mobileViewButton = $this->buttonBar->makeLinkButton()
-                ->setTitle('Mobile')
-                ->setClasses($mobileIcon)
-                ->setIcon($this->iconFactory->getIcon($mobileIcon, Icon::SIZE_SMALL))
-                ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id, 'device' => '1']));
-            $pcViewButton = $this->buttonBar->makeLinkButton()
-                ->setTitle('PC/Tablet')
-                ->setClasses($pcIcon)
-                ->setIcon($this->iconFactory->getIcon($pcIcon, Icon::SIZE_SMALL))
-                ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id, 'device' => '2']));
-
-            $this->buttonBar->addButton($allViewButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
-            $this->buttonBar->addButton($mobileViewButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
-            $this->buttonBar->addButton($pcViewButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
+            $this->buttonBar->addButton(
+                $this->getButton($mobileIcon, 'Mobile Content', ['tx_aoeadaptive_device' => DeviceDetector::TYPE_MOBILE]),
+                ButtonBar::BUTTON_POSITION_LEFT, 6
+            );
+            $this->buttonBar->addButton(
+                $this->getButton($pcIcon, 'PC/Tablet Content', ['tx_aoeadaptive_device' => DeviceDetector::TYPE_PC_TABLET]),
+                ButtonBar::BUTTON_POSITION_LEFT, 6
+            );
+            $this->buttonBar->addButton(
+                $this->getButton($allDesktop, 'All Content'),
+                ButtonBar::BUTTON_POSITION_LEFT, 6
+            );
         }
+    }
+
+    /**
+     * @param  string $iconId Button Icon identifier.
+     * @param  string $title Button link title.
+     * @param  array $urlParameters Additional parameters for button link.
+     * @return ButtonInterface
+     */
+    private function getButton($iconId, $title, array $urlParameters = []): ButtonInterface {
+        $urlParameters['id'] = $this->id;
+
+        return $this->buttonBar->makeLinkButton()
+            ->setTitle($title)
+            ->setClasses($iconId)
+            ->setIcon($this->iconFactory->getIcon($iconId, Icon::SIZE_SMALL))
+            ->setHref(BackendUtility::getModuleUrl($this->moduleName, $urlParameters));
     }
 }

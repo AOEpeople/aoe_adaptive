@@ -36,11 +36,12 @@ class DatabaseRecordList
      */
     public function buildQueryParametersPostProcess(&$parameters, $table)
     {
-        if (($table === 'tt_content') && (isset($_GET['device']))) {
-            $deviceType = (DeviceDetector::TYPE_MOBILE === intval(GeneralUtility::_GP('device')))
-                          ? DeviceDetector::TYPE_MOBILE
-                          : DeviceDetector::TYPE_PC_TABLET;
-            $parameters['where'][] = "(FIND_IN_SET('$deviceType', tx_aoeadaptive_devices) OR tx_aoeadaptive_devices = '')";
+        if (($table === 'tt_content') && isset($_GET['tx_aoeadaptive_device']) && is_numeric($_GET['tx_aoeadaptive_device'])) {
+            $deviceType = intval(GeneralUtility::_GP('tx_aoeadaptive_device'));
+
+            if ((DeviceDetector::TYPE_MOBILE === $deviceType) || (DeviceDetector::TYPE_PC_TABLET === $deviceType)) {
+                $parameters['where'][] = "(FIND_IN_SET('$deviceType', tx_aoeadaptive_devices) OR tx_aoeadaptive_devices = '')";
+            }
         }
     }
 }

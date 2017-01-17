@@ -38,7 +38,7 @@ class UserGroup extends AbstractAuthenticationService
     public function getGroups(array $user = null, array $groups)
     {
         $deviceDetector = GeneralUtility::makeInstance(DeviceDetector::class);
-        if ($deviceDetector && $deviceDetector->isMobile()) {
+        if ($deviceDetector && $deviceDetector->isMobile() && (!$deviceDetector->isTablet())) {
             $pseudoFrontendGroup = [
                 'title' => 'Frontend: Mobile',
                 'uid'   => '-333'
