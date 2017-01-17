@@ -1,4 +1,14 @@
+.tx-aoeadaptive-all-active,
 .tx-aoeadaptive-pc-active,
 .tx-aoeadaptive-mobile-active {
     background-color: #444;
+}
+
+.t3-page-ce-header .icon-tx-aoeadaptive-all,
+.t3-page-ce-header .icon-tx-aoeadaptive-pc {
+    margin-left: 10px;
+}
+
+.t3-page-ce-header .icon-tx-aoeadaptive-mobile {
+    margin-left: 6px;
 }

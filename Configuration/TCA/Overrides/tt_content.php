@@ -10,7 +10,7 @@ $langFile = 'LLL:EXT:aoe_adaptive/Resources/Private/Language/Backend/Tceform.xlf
     'tt_content',
     [
         'tx_aoeadaptive_devices' => [
-            'exclude' => 0,
+            'exclude' => 1,
             'label' => $langFile . ':tt_content.tx_aoeadaptive_devices',
             'config' => [
                 'type' => 'select',
@@ -20,7 +20,8 @@ $langFile = 'LLL:EXT:aoe_adaptive/Resources/Private/Language/Backend/Tceform.xlf
                     [$langFile . ':tt_content.tx_aoeadaptive_devices.mobile', Service\DeviceDetector::TYPE_MOBILE],
                     [$langFile . ':tt_content.tx_aoeadaptive_devices.tablet_pc', Service\DeviceDetector::TYPE_PC_TABLET],
                 ],
-                'size' => 5,
+                'size' => 2,
+                'maxitems' => 1
             ]
         ]
     ]

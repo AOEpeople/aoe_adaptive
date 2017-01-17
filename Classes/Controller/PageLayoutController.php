@@ -43,6 +43,7 @@ class PageLayoutController extends T3PageLayoutController
 
         // Render new toolbar buttons only in "Columns" view
         if ($function === '') {
+            $allDesktop = 'tx-aoeadaptive-all';
             $mobileIcon = 'tx-aoeadaptive-mobile';
             $pcIcon = 'tx-aoeadaptive-pc';
 
@@ -52,8 +53,15 @@ class PageLayoutController extends T3PageLayoutController
                 } elseif (DeviceDetector::TYPE_PC_TABLET === intval(GeneralUtility::_GET('device'))) {
                     $pcIcon .= '-active';
                 }
+            } else {
+                $allDesktop .= '-active';
             }
 
+            $allViewButton = $this->buttonBar->makeLinkButton()
+                ->setTitle('All elements')
+                ->setClasses($allDesktop)
+                ->setIcon($this->iconFactory->getIcon($allDesktop, Icon::SIZE_SMALL))
+                ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id]));
             $mobileViewButton = $this->buttonBar->makeLinkButton()
                 ->setTitle('Mobile')
                 ->setClasses($mobileIcon)
@@ -65,6 +73,7 @@ class PageLayoutController extends T3PageLayoutController
                 ->setIcon($this->iconFactory->getIcon($pcIcon, Icon::SIZE_SMALL))
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id, 'device' => '2']));
 
+            $this->buttonBar->addButton($allViewButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
             $this->buttonBar->addButton($mobileViewButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
             $this->buttonBar->addButton($pcViewButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
         }

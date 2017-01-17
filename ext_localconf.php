@@ -42,3 +42,17 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     ['source' => 'EXT:' . $extKey . '/Resources/Public/Icons/mobile-active.svg']
 );
+$iconRegistry->registerIcon(
+    'tx-aoeadaptive-all',
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    ['source' => 'EXT:' . $extKey . '/Resources/Public/Icons/mobile-desktop.svg']
+);
+$iconRegistry->registerIcon(
+    'tx-aoeadaptive-all-active',
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    ['source' => 'EXT:' . $extKey . '/Resources/Public/Icons/mobile-desktop-active.svg']
+);
+
+if (TYPO3_MODE == 'BE') {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'][$extKey] = 'Aoe\\AoeAdaptive\\Hook\\PageLayoutViewDrawHeader->tt_content_drawHeader';
+}
