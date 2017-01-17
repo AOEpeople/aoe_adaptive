@@ -82,7 +82,7 @@ class ButtonBar
         $this->init();
 
         // Render new toolbar buttons for "Columns" view in page layout module
-        if (($this->moduleName === self::MODULE_PAGE_LAYOUT) && ($this->moduleFunction === self::FUNCTION_PAGE_LAYOUT_COLUMNS)) {
+        if ($this->id && ($this->moduleName === self::MODULE_PAGE_LAYOUT) && ($this->moduleFunction === self::FUNCTION_PAGE_LAYOUT_COLUMNS)) {
             if (isset($_GET['tx_aoeadaptive_device']) && is_numeric($_GET['tx_aoeadaptive_device'])) {
                 $deviceType = intval($_GET['tx_aoeadaptive_device']);
             } else {
