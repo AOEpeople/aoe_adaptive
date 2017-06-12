@@ -55,4 +55,22 @@ class UserGroup extends AbstractAuthenticationService
 
         return $groups;
     }
+
+   /**
+    * check a group if it's valid
+    *
+    * @param array $user    Data of user.
+    * @param array $group   group row array.
+    * @return boolean       true if group is valid
+    */
+    public function authGroup($user, $group) 
+    {
+        $valid = true;
+
+        if ($this->mode === 'authGroupsFE' && ($group['uid'] === '-333' || $group['uid'] === '-444')) {
+            $valid = false;
+        } 
+
+        return $valid;
+    }
 }
