@@ -20,6 +20,19 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnab
     'className' => \Aoe\AoeAdaptive\Service\Auth\UserGroup::class
 ]);
 
+// Pseudo groups are no auth groups
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($extKey, 'auth', \Aoe\AoeAdaptive\Service\Auth\UserGroup::class, [
+    'title' => '',
+    'description' => '',
+    'subtype' => 'authGroupsFE',
+    'available' => true,
+    'priority' => 40,
+    'quality' => 70,
+    'os' => '',
+    'exec' => '',
+    'className' => \Aoe\AoeAdaptive\Service\Auth\UserGroup::class
+]);
+
 // Register backend icons
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon(
