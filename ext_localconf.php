@@ -7,6 +7,9 @@ $extKey = 'aoe_adaptive';
 // Hook to filter frontend content by device type
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'][$extKey] = 'Aoe\\AoeAdaptive\\Hook\\PageRepository->addEnableColumns';
 
+// Hook to add device type as parameter for caching
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'][$extKey] = 'Aoe\\AoeAdaptive\\Hook\\TypoScriptFrontendController->addHashParameters';
+
 // Register auth service to add pseudo groups to frontend users
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($extKey, 'auth', \Aoe\AoeAdaptive\Service\Auth\UserGroup::class, [
     'title' => '',
